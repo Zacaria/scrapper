@@ -1,0 +1,19 @@
+{
+  "name": "scrapper",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zacaria/scrapper.git"
+  },
+  "author": "Zacaria",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Zacaria/scrapper/issues"
+  },
+  "homepage": "https://github.com/Zacaria/scrapper#readme"
+}
