@@ -1,15 +1,25 @@
-import cheerio from 'cheerio';
 import req from 'cheerio-req';
 
 const scrapeHTML = ($, opts) =>
-  Object.keys(opts)
-    .map((key) =>
-      $(opts[key])
+  opts.map(opt => ({
+      selector: opt.selector,
+      target: opt.target,
+      [opt.target]: $(opt.selector)
         .map(function () {
           return $(this).text();
         })
         .get()
-    );
+    })
+  );
+  // Object.keys(opts)
+  //   .map((key) => ({
+  //       [key]: $(opts[key])
+  //         .map(function () {
+  //           return $(this).text();
+  //         })
+  //         .get()
+  //     })
+  //   );
 
 const requestWebsite = (url, opts) =>
   new Promise((resolve, reject) => {
@@ -17,7 +27,10 @@ const requestWebsite = (url, opts) =>
       if (err) {
         return reject(err);
       }
-      resolve(scrapeHTML($, opts));
+      resolve({
+        url,
+        data: scrapeHTML($, opts)
+      });
     });
   });
 
