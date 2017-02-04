@@ -5,7 +5,7 @@ const ScrapSchema = new Schema({
   url: {
     type    : String,
     required: true,
-    unique  : true
+    unique  : false
   },
   data: [{
     selector: String,
