@@ -21,15 +21,14 @@ const scrapeHTML = ($, opts) => {
 
 const requestWebsite = (url, opts) =>
   new Promise((resolve, reject) => {
-    req(url, (err, $, res, body) => {
+    console.log('url', url);
+    req(url, (err, $) => {
       if (err) {
         console.log('err', err);
         return reject(err);
       }
 
-      console.log($.html());
-
-      const data = scrapeHTML($, opts);)
+      const data = scrapeHTML($, opts);
       resolve({
         url,
         data
