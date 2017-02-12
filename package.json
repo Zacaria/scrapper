@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run dist && node dist/index.js",
+    "casper": "npm run dist && node_modules/casperjs/bin/casperjs dist/scrapper/casper.js  --remote-debugger-port=9001 --remote-debugger-autorun=yes",
     "watch": "node_modules/.bin/nodemon src/index.js --exec babel-node",
     "dist": "babel src -d dist",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -21,6 +22,7 @@
   "homepage": "https://github.com/Zacaria/scrapper#readme",
   "dependencies": {
     "body-parser": "^1.16.0",
+    "casperjs": "^1.1.3",
     "cheerio": "^0.22.0",
     "cheerio-req": "^1.1.2",
     "config": "^1.24.0",
@@ -29,8 +31,8 @@
     "jsdom": "^9.9.1",
     "mongoose": "^4.7.1",
     "morgan": "^1.7.0",
-    "phantomjs": "^2.1.7",
-    "request": "^2.79.0"
+    "request": "^2.79.0",
+    "system": "^1.2.0"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",

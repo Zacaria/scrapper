@@ -4,30 +4,18 @@ import dbInit from './bin/dbInit';
 import Scrap from './models/scrap';
 
 import { keywords, ids, optsList } from '../mocks';
-import { concatAll, sleep } from './lib';
+import { concatAll, genNumberSeries, debouncePromises } from './lib';
 
 dbInit();
 
-const genIds = (from, to) => {
-  return [...Array(to - from).keys()].map(i => i + from);
-};
-
 const urls = (ids, keyword) => {
   const { from, to } = ids;
-  return concatAll(genIds(from, to)
-    .map(id => `https://www.linkedin.com/edu/alumni?id=${id}&facets=&keyword=${keyword}&dateType=attended&startYear=&endYear=&incNoDates=true&start=0&count=10&filters=on`)
+  return concatAll(genNumberSeries(from, to)
+    .map(id => `https://www.linkedin.com/edu/alumni?id=${id}&facets=G.fr:5227&keyword=${keyword}&dateType=attended&startYear=&endYear=&incNoDates=true&start=0&count=10&filters=on`)
   );
 };
 
-const genFunctions = (urls) => {
-  return concatAll(urls.map(url => [
-    () => Promise.resolve(url),
-    () => sleep(250)
-  ]));
-};
-
 const saveScrap = (rawScrap) => {
-  console.log('raw', rawScrap);
   return new Promise((resolve, reject) => {
     const scrap = new Scrap({
       url: rawScrap.url,
@@ -41,7 +29,6 @@ const saveScrap = (rawScrap) => {
     scrap
       .save()
       .then(scrap => {
-        // console.log('scra', scrap);
         resolve({
           data: scrap
         })
@@ -50,7 +37,7 @@ const saveScrap = (rawScrap) => {
   });
 };
 
-const input = genFunctions(concatAll(keywords.map((keyword) => urls(ids, keyword))));
+const input = debouncePromises(concatAll(keywords.map((keyword) => urls(ids, keyword))));
 
 async.eachOfSeries(input,
   (item, key, cb) => {
@@ -68,8 +55,3 @@ async.eachOfSeries(input,
     if (err) console.log('err', err);
     console.log('Done', results);
   });
-
-// Promise.all(keywords.map((keyword) => urls(ids, keyword)))
-//   .then((urls) => scrapper(url, optsList))
-//   .then(saveScrap)
-//   .catch(console.log);
